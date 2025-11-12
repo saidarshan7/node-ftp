@@ -3,28 +3,19 @@
 
 const fs = require('fs');
 const {pipeline} = require('stream/promises');
-const {Readable} = require('stream');
 
-async function writeLargeFile() {
-    // const data = await fs.readFile('input.txt', 'utf8');
-    // const readable = Readable.from(data);
-    // const writable = fs.createWriteStream('largeFile.txt');
+let i = 1;
 
-     const readable = fs.createReadStream('input.txt'); // correct way
-     const writable = fs.createWriteStream('largeFile.txt');
+async function streamMovie(){
 
-    await pipeline(readable,writable);
-    console.log("large file written successfully!!");
+    const data = fs.createReadStream('matrix.mkv');
+    const writeable = fs.createWriteStream('mymovie.mkv');
+    data.on('data', chunk => {
+        console.log(`chunk ${i} `);
+        i++;
+    })
 
+    // await pipeline(data,writeable);
 }
 
-writeLargeFile();
-
-// async function readFileExample() {
-
-//     const data = await fs.readFile('myFile.txt','utf8');
-//     console.log(data);
-// }
-
-// readFileExample();
-
+streamMovie();
